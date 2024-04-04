@@ -19,8 +19,8 @@
          <div class="form-group row">
             <label for="status" class=" col-form-label">Status</label>
             <div class="col-sm-8" >
-               <select name="status" class="form-control" id="status" required>
-                  <option ></option>
+               <select name="status" class="form-control" id="status" >
+                  <option value="">Tous</option>
                   <option value="0">Impayé</option>
                   <option value="1">Payé</option>
                </select>

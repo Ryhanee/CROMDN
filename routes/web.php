@@ -197,6 +197,9 @@ Route::post('medecins/manyLettreRappel', 'DocumentController@manyLettre')->name(
 
 Route::post('medecins/manyPostale', 'DocumentController@manyPostale')->name('manyPostale');
 
+    Route::post('medecins/exportCotisations', 'CotisationController@exportCotisations')->name('exportCotisations');
+
+
 //fin routes Documents
 
 // fin middleware admins

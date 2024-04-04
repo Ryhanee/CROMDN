@@ -46,13 +46,14 @@ class Handler extends ExceptionHandler
     public function render($request, Exception $exception)
     {
         if($exception instanceof \PDOException)
-         {
-              return response()->view('errors.pdo', [], 500);
-         }
-         else
-         {
-             return response()->view('errors.generique',[],500);
-         }
+//         {
+//              return response()->view('errors.pdo', [], 500);
+//         }
+//         else
+//         {
+//             return response()->view('errors.generique',[],500);
+//         }
+            dd($exception);
          return parent::render($request, $exception);
     }
 

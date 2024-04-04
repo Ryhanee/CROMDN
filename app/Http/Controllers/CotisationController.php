@@ -2,12 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Lettre;
+use App\Models\Numerola;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use App\Models\Medecin;
 use App\Models\Cotisation;
 use App\Models\Tarif;
 use Carbon\Carbon;
+use PhpOffice\PhpWord\IOFactory;
+use PhpOffice\PhpWord\PhpWord;
+use PDF;
 
 class CotisationController extends Controller
 {
@@ -139,12 +144,18 @@ class CotisationController extends Controller
         {
             $medecins=Medecin::whereHas('cotisation',function ($query) use ($status,$Anne_in,$Anne_out)
             {
-              $query->where('payment',$status)->whereBetween('annee', [$Anne_in,
-                $Anne_out]);
+                if(empty($status)) {
+                    $query->whereBetween('annee', [$Anne_in,
+                        $Anne_out]);
+                } else {
+                    $query->where('payment',$status)->whereBetween('annee', [$Anne_in,
+                        $Anne_out]);
+                }
+
             },'>',2)->get();
             //dd($medecins);
             if($medecins->isNotEmpty()) {
-                return view('listMedecinsCotisation',compact('medecins'));
+                return view('listMedecinsCotisation',compact('medecins','Anne_in', 'Anne_out'));
             }
             else {
             return redirect(route('showSearchCotisation'))->withErrors(['Aucun Médecin dentiste existe']);
@@ -166,4 +177,89 @@ class CotisationController extends Controller
 
     }
 
+    public function exportCotisations(Request $request)
+    {
+
+        ini_set('memory_limit','-1');
+        ini_set('max_execution_time',0);
+        set_time_limit(450);
+
+        $data = Input::all();
+        $annee_debut = $data['anne_debut'];
+        $annee_fin = $data['anne_fin'];
+
+        $medecins = $data['medecins'];
+        if ($medecins) {
+            $IdMedecins = explode(" ", $medecins);
+            $List_PDF = [];
+
+            foreach ($IdMedecins as $medecinId) {
+                $medecin = Medecin::findOrFail($medecinId); // Using findOrFail to handle if medecin is not found
+                $cotisations = Cotisation::where('id_medecin', $medecin->id)->get();
+
+                // Create an array to store cotisations details for each medecin
+                $cotisationsData = [
+                    'medecin_name' => $medecin->nom . ' ' . $medecin->prenom,
+                    'cotisations' => [],
+                ];
+
+                foreach ($cotisations as $cotisation) {
+                    // Push les cotisations dans un array
+                    $cotisationsData['cotisations'][$cotisation->annee] = $cotisation->montant;
+                }
+
+
+                $List_PDF[] = $cotisationsData;
+            }
+
+            $html = '<table>';
+            $html .= '<thead>';
+            $html .= '<tr style="background: #adb5bd;">';
+            $html .= '<th>Num</th><th>Nom medecin</th>';
+
+            // Ajouter les en-têtes d'année
+            for ($annee = $annee_debut; $annee <= $annee_fin; $annee++) {
+                $html .= '<th>' . $annee . '</th>';
+            }
+            $html .= '</tr>';
+            $html .= '</thead>';
+            $html .= '<tbody>';
+            $num = 0;
+
+            // Ajouter les données des médecins
+            foreach ($List_PDF as $medecinData) {
+                $html .= '<tr>';
+                $html .= '<td>' . $num . '</td>';
+                $html .= '<td>' . $medecinData['medecin_name'] . '</td>';
+
+                // Boucler à travers chaque année
+                for ($annee = $annee_debut; $annee <= $annee_fin; $annee++) {
+                    // Vérifier si une cotisation existe pour cette année
+                    if (isset($medecinData['cotisations'][$annee])) {
+                        $html .= '<td>' . $medecinData['cotisations'][$annee] . '</td>';
+                    } else {
+                        $html .= '<td></td>';
+                    }
+                }
+                $num++;
+
+
+                $html .= '</tr>';
+            }
+
+            $html .= '</tbody>';
+            $html .= '</table>';
+
+            //dd($html);
+
+            // Générer le PDF avec dompdf et mettre le mode landscape
+
+            $pdf = PDF::loadHtml($html)->setPaper('letter', 'landscape');
+// Download the PDF
+            return $pdf->download('journal-cotisations.pdf');
+
+        } else {
+            return redirect()->back();
+        }
+    }
 }

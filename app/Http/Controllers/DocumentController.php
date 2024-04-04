@@ -12,13 +12,12 @@ use App\Models\Attestation;
 use App\Models\Numerola;
 use App\Models\Etat;
 use Carbon\Carbon;
-//use PDF;
+use PDF;
 use I18N_Arabic_Glyphs;
 
 use PhpOffice\PhpWord\Exception\Exception;
 use PhpOffice\PhpWord\PhpWord;
 use PhpOffice\PhpWord\IOFactory;
-use PhpOffice\PhpWord\Writer\PDF;
 
 class DocumentController extends Controller
 {
