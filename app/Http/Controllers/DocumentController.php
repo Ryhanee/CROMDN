@@ -18,6 +18,7 @@ use I18N_Arabic_Glyphs;
 use PhpOffice\PhpWord\Exception\Exception;
 use PhpOffice\PhpWord\PhpWord;
 use PhpOffice\PhpWord\IOFactory;
+use PhpOffice\PhpWord\Shared\Html;
 
 class DocumentController extends Controller
 {
@@ -130,6 +131,7 @@ class DocumentController extends Controller
     {
         $data = $request->all();
         $documentType = $request->input('document_type');
+        //dd($documentType);
         if (array_key_exists('print', $data)) {
             $num = Numerola::create([
                 'id_attestation' => 1,
@@ -197,20 +199,13 @@ class DocumentController extends Controller
         $attestation = str_replace("[date_insecrit]", $date_insecrit, $attestation);
 
         if ($documentType === 'word') {
-            $phpWord = new PhpWord();
-           // $section = $phpWord->addSection();
-           // $section->addText(htmlspecialchars_decode($attestation), ['utf8' => true]); // Ensure UTF-8 encoding
-            $section = $phpWord->addSection();
-            $description = "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
-            $section->addText($description);
-            $objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'Word2007');
 
-            $filename = 'TestWordFile.docx'; // Filename for saving
+            $phpWord = new PhpWord();
+            $section = $phpWord->addSection();
+            // dd($attestation);
+
+            Html::addHtml($section, $attestation);
+            $filename = 'attestation.docx'; // Filename for saving
 
             try {
                 $writer = IOFactory::createWriter($phpWord, 'Word2007');
@@ -220,10 +215,9 @@ proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
                 return response()->json(['error' => 'Error saving the Word document'], 500);
             }
 
-            // Check if the file exists before attempting to download
+            // VERIFIER SI LE FICHIER EXIST
             if (file_exists(storage_path($filename))) {
-                // Correct filename used here
-                return response()->download(storage_path($filename), 'TestWordFile.docx')->deleteFileAfterSend(true);
+                return response()->download(storage_path($filename), 'attestation.docx')->deleteFileAfterSend(true);
             } else {
                 // Log or handle the error
                 return response()->json(['error' => 'File not found'], 404);
