@@ -191,6 +191,7 @@ class CotisationController extends Controller
                         ->whereBetween('annee', [$annee_debut, $annee_fin]);
                 }
 
+
                 $cotisations = $cotisations->get();
 
                 // Create an array to store cotisations details for each medecin
@@ -269,6 +270,8 @@ class CotisationController extends Controller
         $annee_debut = $data['anne_in'];
         $annee_fin = $data['anne_out'];
         $status = $data['status'];
+        $nbr_annee = $data['nbr_annee'];
+
 
         if ($annee_debut < $annee_fin) {
             $medecins = Medecin::whereHas('cotisation', function ($query) use ($status, $annee_debut, $annee_fin) {
@@ -294,7 +297,7 @@ class CotisationController extends Controller
                     });
 
                     // Skip medecin if more than 4 unpaid cotisations in last 2 years
-                    if ($unpaidCotisations->count() > 4) {
+                    if ($unpaidCotisations->count() > $nbr_annee) {
                         continue;
                     }
 
