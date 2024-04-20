@@ -156,8 +156,12 @@ class DocumentController extends Controller
 
         $date_insecrit = Etat::where('id_medecin', $data['idMedecin'])->where('id_type', 10)->first()->date;
 
-        $attestation = Attestation::whereId($data['attestation'])->first()->text;
+        if ($documentType === 'word') {
+            $attestation = Attestation::whereId($data['attestation'])->first()->text_word;
+        } else {
+            $attestation = Attestation::whereId($data['attestation'])->first()->text;
 
+        }
         if ($data['attestation'] == 10) {
             $rdv = $data['rdv'];
             $attestation = str_replace("[rdv]", $rdv, $attestation);
