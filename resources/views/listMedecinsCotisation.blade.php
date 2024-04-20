@@ -56,6 +56,7 @@
                     <input type="hidden" name="medecins" value="{{($medecins->implode('id', ', '))}}">
                     <input type="hidden" name="anne_debut" value="{{$Anne_in}}">
                     <input type="hidden" name="anne_fin" value="{{$Anne_out}}">
+                    <input type="hidden" name="status" value="{{$status}}">
 
                     <button type="submit"  class="btn btn-info" >
                         Exporter les cotisations <i class="fas fa-envelope"></i>
