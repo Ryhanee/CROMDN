@@ -69,6 +69,21 @@
             </div>
          </div>
 
+          <div class="form-group row">
+              <label for="nbr_annee" class=" col-form-label">Nombre d'années</label>
+              <div class="col-sm-8">
+
+                  <select id="nbr_annee" name="nbr_annee" class="form-control ">
+                      @for ($i = 1; $i <= 10; $i++)
+                      <option value="{{ $i }}">{{ $i }}</option>
+                      @endfor
+
+                  </select>
+
+              </div>
+
+          </div>
+
       </div>
 
       <div class="col-md-12 submit-center">
@@ -81,7 +96,7 @@
     <div class="row">
         <div class="col-md-12 total">
             <h3>
-                Rechercher les cotisations personnalisé
+                Exporter les cotisation impayées
             </h3>
         </div>
     </div>
@@ -95,7 +110,7 @@
                 <div class="col-sm-8" >
                     <select name="status" class="form-control" id="status" >
                         <option value="">Tous</option>
-                        <option value="0">Impayé</option>
+                        <option value="0" selected>Impayé</option>
                         <option value="1">Payé</option>
                     </select>
 
@@ -160,7 +175,7 @@
         </div>
 
         <div class="col-md-12 submit-center">
-            <button type="submit" id="btn_cotisation" class="btn btn-primary btn-rechercher">Rechercher</button>
+            <button type="submit" id="btn_cotisation" class="btn btn-primary btn-rechercher">Exporter</button>
         </div>
     </form>
     {{-- fin du formulaire --}}

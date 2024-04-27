@@ -129,6 +129,8 @@ class CotisationController extends Controller
         $Anne_in = $data['anne_in'];
         $Anne_out = $data['anne_out'];
         $status = $data['status'];
+        $nbr_annee = $data['nbr_annee'];
+
 
         if ($Anne_in < $Anne_out) {
             $medecins = Medecin::whereHas('cotisation', function ($query) use ($status, $Anne_in, $Anne_out) {
@@ -140,7 +142,7 @@ class CotisationController extends Controller
                         $Anne_out]);
                 }
 
-            }, '>', 2)->get();
+            }, '>', $nbr_annee)->get();
             //dd($medecins);
             if ($medecins->isNotEmpty()) {
                 return view('listMedecinsCotisation', compact('medecins', 'Anne_in', 'Anne_out', 'status'));
@@ -174,8 +176,8 @@ class CotisationController extends Controller
         $annee_debut = $data['anne_debut'];
         $annee_fin = $data['anne_fin'];
         $status = $data['status'];
-
         $medecins = $data['medecins'];
+
         if ($medecins) {
             $IdMedecins = explode(" ", $medecins);
             $List_PDF = [];
@@ -280,7 +282,7 @@ class CotisationController extends Controller
                 } else {
                     $query->where('payment', $status)->whereBetween('annee', [$annee_debut, $annee_fin]);
                 }
-            })->get();
+            }, '>', $nbr_annee)->get();
 
             if ($medecins->isNotEmpty()) { // Check if any medecins are found
                 $List_PDF = [];
@@ -296,8 +298,8 @@ class CotisationController extends Controller
                         return $cotisation->payment === 0;
                     });
 
-                    // Skip medecin if more than 4 unpaid cotisations in last 2 years
-                    if ($unpaidCotisations->count() > $nbr_annee) {
+                    // Skip medecin if less than 4 unpaid cotisations in last x years
+                    if ($unpaidCotisations->count() <= $nbr_annee) {
                         continue;
                     }
 

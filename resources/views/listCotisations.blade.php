@@ -36,12 +36,15 @@
                 </div>
                 <input type="hidden" name="medecin" value="{{$medecin->id}}">
 
-            <div class="col-md-12 submit-center">
+            <div class="col-md-4 submit-center">
                 <button type="submit" class="btn btn-primary">Enregistrer</button>
             </div>
 
         </form>
     </div>
+    @if($somme > 0)
+    <p STYLE="text-align: right; font-weight:bold;color:red;float: right;width:100%;font-size: 17px;">La somme des cotisation impayés est :{{$somme}} TND</p>
+    @endif
             <table class="table table-hover table-striped col-md-12 text-center">
                 <thead class="thead-dark">
                     <tr>
@@ -70,9 +73,7 @@
 
     {{ $cotisations->render() }}
 
-    @if($somme > 0)
-    <p STYLE="text-align: right">La somme des cotisation impayés est :{{$somme}} TND</p>
-    @endif
+
 
     </div>
 

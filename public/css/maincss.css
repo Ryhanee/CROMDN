@@ -177,7 +177,7 @@ section.copyrights .container {
 }
 
 p.nom-administrateur.col-md-6 {
-   
+
     font-weight: 600;
 }
 
@@ -268,7 +268,7 @@ span.resultat {
 h2 {
     font-weight: 600;
     color: #343a40;
- 
+
 }
 button.btn.btn-lg.btn-success:hover {
     background-color: #6c757d!important;
@@ -281,11 +281,11 @@ button.btn.btn-lg.btn-success:hover {
 
 /* preloaaaader*/
 .loader {
-  
+
 margin: auto;
-  
+
 width: 100px;
-  
+
 height: 100px;
 }
 
@@ -303,16 +303,16 @@ height: 100px;
 }
 
 span.titre-appli.titre-preload {
-   
+
     font-size: 2.5em;
 }
-h6.bybusinessmania.bybusinessmania-preload {   
+h6.bybusinessmania.bybusinessmania-preload {
 color: #000000a6;
-  
+
 top: 94px;
-  
+
 left: 516px;
-  
+
 font-size: 1.5em;
 }
 .loader img {
@@ -520,7 +520,7 @@ a.btn.btn-primary {
 }
 
 .zoom:hover {
-  transform: scale(1.2); 
+  transform: scale(1.2);
 }
 
 a.btn.btn-dark.float-right {
@@ -733,7 +733,7 @@ a {
 .col-md-12.lot-center-mail label.col-form-label {
     width: 17%;
 }
-#map { 
+#map {
             border:2px solid red;
             width: 1200px;
             height: 400px;
@@ -774,6 +774,7 @@ a {
 #btn_cotisation
 {
     background-color: #007bff!important;
+    width: 45%;
 }
 #ajoutMedecin {
     width: 15%;
@@ -785,9 +786,9 @@ a {
 }
 /**********************Responsive design*********************/
 
-@media screen and (min-width: 1025px) 
+@media screen and (min-width: 1025px)
 {
-section.contenu1 
+section.contenu1
     {
     /* min-height: 662px; */
     }
@@ -807,9 +808,9 @@ section.contenu1 .container {
 
 
 button.btn.btn-primary.btn-rechercher {
-    
+
 font-size: 20px;
-    
+
 width: 18%;
 }
 
@@ -821,7 +822,7 @@ section.contenu1 .container {
 }
 
 .col-form-label {
-    
+
 font-size: 1.1em!important;
 }
 
@@ -837,11 +838,11 @@ section#logo-top .container {
 }}
 @media screen and (max-width: 1025px) {
     h6.bybusinessmania.bybusinessmania-preload {
-   
+
     top: 98px;
-    left: 452px; 
+    left: 452px;
 }
-h6.bybusinessmania { 
+h6.bybusinessmania {
     top: 45px;
     left: 583px;
 }
@@ -851,6 +852,11 @@ h6.bybusinessmania {
 @media screen and (min-width: 1650px){
 
  section.contenu1 {
-     min-height: 830px; 
+     min-height: 830px;
 }}
+
+.btn-document {
+    background: #3597D4 !important;
+    color: white !important;
+}
 

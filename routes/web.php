@@ -81,11 +81,14 @@ Route::get('/typeParModeExercice/{id_mode}','Ajax\AjaxController@typeParModeExer
 
 	Route::get('/advanced','MedecinController@searchAdvanced')->name('searchAdvanced');
 
+    Route::post('/medecin/export/pdf', 'MedecinController@exportListeMedecins')->name('exportListeMedecins');
+
 //routes cotisations et Tarif
 
 	Route::get('/medecin/cotisation/{idMedecin}', 'CotisationController@showCotisations')->name('showCotisations');
 
 	Route::post('/medecin/cotisation/update', 'CotisationController@updateCotisations')->name('updateCotisations');
+
 
 	Route::get('/tarifs', 'CotisationController@showTarifs')->name('showTarifs');
 
@@ -185,6 +188,7 @@ Route::get('search/document/{idMedecin}', 'DocumentController@showDocument')->na
 Route::get('search/postale/{idMedecin}', 'DocumentController@showPostale')->name('showPostale');
 
 Route::get('search/postale/pdf/{idMedecin}', 'DocumentController@generatePDFpostale')->name('generatePDFpostale');
+Route::get('search/postale/pdfword/{idMedecin}', 'DocumentController@generateWORDpostale')->name('generateWORDpostale');
 
 Route::get('search/lettre/{idMedecin}', 'DocumentController@showLettres')->name('showLettres');
 

@@ -16,14 +16,14 @@
     <!-- Liste  des medecins --->
 
     <div class="row justify-content-between  entete_medecin">
-            <div class="col-md-12"> 
+            <div class="col-md-12">
             <div class="float-left btn-list">
             <form action="{{ route('formManyEmail') }}" method="post">
             @csrf
                 <input type="hidden" name="medecins" value="{{($medecinsGet->implode('id', ', ') ) }}">
                 <button type="submit"  class="btn btn-warning" >
                  Email <i class="fas fa-envelope"></i>
-                </button>     
+                </button>
             </form>
         </div>
         <div class="float-left btn-list">
@@ -32,9 +32,18 @@
                 <input type="hidden" name="medecins" value="{{($medecins->implode('id', ', '))}}">
                 <button type="submit"  class="btn btn-info" >
                  SMS <i class="fas fa-sms"></i>
-                </button>     
+                </button>
             </form>
         </div>
+                <div class="float-left btn-list">
+                    <form action="{{ route('exportListeMedecins') }}" method="post">
+                        @csrf
+                        <input type="hidden" name="medecins" value="{{($medecinsGet->implode('id', ', '))}}">
+                        <button type="submit"  class="btn btn-document" >
+                            Export en pdf <i class="fas fa-file"></i>
+                        </button>
+                    </form>
+                </div>
     </div>
     </div>
 
@@ -45,6 +54,8 @@
                     <th scope="col">N° Inscription</th>
                     <th scope="col">Nom</th>
                     <th scope="col">Prénom</th>
+                    <th scope="col">Localité</th>
+                    <th scope="col">Adresse</th>
                     <th scope="col">Profil</th>
                     <th scope="col" colspan="2">Actions</th>
                 </tr>
@@ -52,12 +63,15 @@
             <tbody>
                 @foreach($medecins as $medecin)
                 <tr>
-                    <th >{{ $medecin->id }}</th>
+                    <td >{{ $medecin->id }}</td>
                     <td>{{ $medecin->nom }} </td>
                     <td>{{ $medecin->prenom }}</td>
+                    <td>{{ $medecin->ville->libelle }}</td>
+                    <td>{{ $medecin->adresse }}</td>
+
                     <td ><a href="{{ route('showMedecin',$medecin->id) }}">
                         <i class="fas fa-user-circle  fa-2x"></i>
-                    </a> 
+                    </a>
                     </td>
                     <td><a href="{{ route('showUpdateMedecin',$medecin->id) }}" ><i class="fas fa-edit btn btn-primary" ></i></a>
                     <td>
@@ -65,7 +79,7 @@
                             <i class="fas fa-trash-alt btn btn-danger"></i>
                         </a>
                     </td>
-                        
+
                     </td>
                     </tr>
 

@@ -39,9 +39,7 @@
             </div>
 
             <div class="submit-center-lettre">
-                <button type="submit" name="print" class="btn btn-primary" >Print PDF</button>
-                <button type="submit" name="preview" class="btn btn-info preview" >Visualiser PDF</button>
-                <button type="submit" name="download_pdf" class="btn btn-primary" >Télécharger PDF</button>
+                <button type="submit" name="download_pdf" class="btn btn-info preview" >Télécharger PDF</button>
                 <button type="submit" name="download_word" class="btn btn-primary" >Télécharger Word</button>
                 <input type="button" value="Retour" onclick="history.go(-1)" class="btn btn-danger btn-rechercher">
             </div>

@@ -59,7 +59,7 @@
                     <input type="hidden" name="status" value="{{$status}}">
 
                     <button type="submit"  class="btn btn-info" >
-                        Exporter les cotisations <i class="fas fa-envelope"></i>
+                        Exporter les journal des cotisations <i class="fas fa-envelope"></i>
                     </button>
                 </form>
             </div>
