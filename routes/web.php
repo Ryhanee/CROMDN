@@ -205,6 +205,10 @@ Route::post('medecins/manyLettreRappel', 'DocumentController@manyLettre')->name(
 
 Route::post('medecins/manyPostale', 'DocumentController@manyPostale')->name('manyPostale');
 
+Route::post('medecins/manyPostalePerso', 'DocumentController@manyPostalePerso')->name('manyPostalePerso');
+
+
+
 Route::post('medecins/exportCotisations', 'CotisationController@exportCotisations')->name('exportCotisations');
 
 

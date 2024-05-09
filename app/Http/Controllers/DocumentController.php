@@ -396,11 +396,7 @@ class DocumentController extends Controller
         ];
 
         $pdf = PDF::loadView('manyEtiquette', $info);
-        //$pdf->setPaper('A4', 'landscape'); // Set paper size and orientation
-
         $pdf->setOptions(['rotation' => 90]);
-
-        //$pdf->getDomPDF()->getCanvas()->rotate(90, 100, 100); // Example rotation point (100, 100)
 
         // $v=implode(' ',$postales);
         // $pdf = PDF::loadHtml($v);
@@ -409,6 +405,42 @@ class DocumentController extends Controller
 
     }
 
+    public function manyPostalePerso()
+    {
+        ini_set('memory_limit','-1');
+        ini_set('max_execution_time',0);
+        set_time_limit(450);
+
+        $data = Input::all();
+        $postales = [];
+
+        $medecins = $data['medecins'];
+        $IdMedecins = explode(" ", $medecins);
+
+        foreach ($IdMedecins as $medecinId) {
+            $medecin = Medecin::whereId($medecinId)->first();
+            $data = [
+                'prenom' => $medecin->prenom,
+                'nom' => $medecin->nom,
+                'adresse' => $medecin->adresse,
+                'code' => $medecin->ville->code_postal,
+                'nb' => 4
+            ];
+            array_push($postales, $data);
+        }
+        $info = [
+            'postales' => $postales,
+        ];
+
+        $pdf = PDF::loadView('etiquettePersoPostale', $info);
+
+
+        // $v=implode(' ',$postales);
+        // $pdf = PDF::loadHtml($v);
+//return view('manyEtiquette',['postales' => $postales]);
+        return $pdf->stream('cromdn.pdf');
+
+    }
 
     public function generateWORDasttestation()
     {

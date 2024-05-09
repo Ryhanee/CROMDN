@@ -45,7 +45,17 @@
                 @csrf
                     <input type="hidden" name="medecins" value="{{($medecins->implode('id', ', '))}}">
                     <button type="submit"  class="btn btn-info btn-document" >
-                    Informations Postales <i class="fas fa-address-card"></i>
+                    Informations Postales <i class="fas fa-address-card"></i> (enveloppe)
+                    </button>
+                </form>
+            </div>
+
+            <div class="float-left btn-list">
+                <form action="{{ route('manyPostalePerso') }}" method="post" target="_blank">
+                    @csrf
+                    <input type="hidden" name="medecins" value="{{($medecins->implode('id', ', '))}}">
+                    <button type="submit"  class="btn btn-info btn-document" >
+                        Informations Postales <i class="fas fa-address-card"></i> (etiquette)
                     </button>
                 </form>
             </div>
