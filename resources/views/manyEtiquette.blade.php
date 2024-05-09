@@ -20,12 +20,12 @@
       {
          border-style: solid;
          width: 80%;
-         height: 80px;
+         height: 150px;
          border-radius: 5px;
          padding: 5px;
          margin:6px auto;
       }
-      #adres 
+      #adres
       {
          text-align: center;
          margin: 5px;
@@ -34,7 +34,7 @@
       {
          text-align: left;
       }
-      #cod
+      #code
       {
          text-align: right;
       }
@@ -46,13 +46,16 @@
 </head>
 <body>
    <div id="container">
-      @foreach($postales as $postale) 
-         <div  id="postal" >     
+      @foreach($postales as $postale)
+       <div style="height: 700px;transform: rotate(90deg);" >
+
+       <div  id="postal">
                   <h5 id="pseud">  {{ $postale['prenom'] }} {{ $postale['nom'] }} </h5>
                   <h5 id="adres">  {{ $postale['adresse'] }}   </h5>
-                  <h5 id="code">    {{ $postale['code'] }}  </h5>           
-         </div> 
+                  <h5 id="code">    {{ $postale['code'] }}  </h5>
+             </div>
+         </div>
       @endforeach
-   </div> 
+   </div>
 </body>
 </html>

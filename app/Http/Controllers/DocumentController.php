@@ -35,59 +35,15 @@ class DocumentController extends Controller
         return view('showPostale', compact('medecin'));
     }
 
-    public function generateWORDpostale($idMedecin)
-    {
-        ini_set('memory_limit', '-1');
-        ini_set('max_execution_time', 0);
-        set_time_limit(450);
-        $medecin = Medecin::whereId($idMedecin)->first();
-        $data = [
-            'title' => 'Données Postales',
-            'prenom' => $medecin->prenom,
-            'nom' => $medecin->nom,
-            'adresse' => $medecin->adresse,
-            'code' => $medecin->ville->code_postal,
-        ];
 
-        // Construct HTML content from data
-        $htmlContent ="<div style='border:1px solid black; padding: 10px; '>";
-        $htmlContent .= "<p><strong>Title:</strong> Données Postales</p>";
-        $htmlContent .= "<p><strong>Prénom:</strong> " . $medecin->prenom . "</p>";
-        $htmlContent .= "<p><strong>Nom:</strong> " . $medecin->nom . "</p>";
-        $htmlContent .= "<p><strong>Adresse:</strong> " . $medecin->adresse . "</p>";
-        $htmlContent .= "<p><strong>Code Postal:</strong> " . $medecin->ville->code_postal . "</p>";
-        $htmlContent .= "</div>";
-
-        $phpWord = new PhpWord();
-            $section = $phpWord->addSection();
-
-            Html::addHtml($section, $htmlContent);
-            $filename = 'cromdn.docx'; // Filename for saving
-
-            try {
-                $writer = IOFactory::createWriter($phpWord, 'Word2007');
-                $writer->save(storage_path($filename)); // Save the file
-            } catch (\Exception $e) {
-                // Log or handle the error
-                return response()->json(['error' => 'Error saving the Word document'], 500);
-            }
-
-            // VERIFIER SI LE FICHIER EXIST
-            if (file_exists(storage_path($filename))) {
-                return response()->download(storage_path($filename), 'cromdn.docx')->deleteFileAfterSend(true);
-            } else {
-                // Log or handle the error
-                return response()->json(['error' => 'File not found'], 404);
-            }
-    }
 
     public function generatePDFpostale($idMedecin)
     {
-        ini_set('memory_limit', '-1');
-        ini_set('max_execution_time', 0);
+        ini_set('memory_limit','-1');
+        ini_set('max_execution_time',0);
         set_time_limit(450);
+
         $medecin = Medecin::whereId($idMedecin)->first();
-        $documentType = $data['document_type'];
 
         $data = [
             'title' => 'Données Postales',
@@ -96,9 +52,11 @@ class DocumentController extends Controller
             'adresse' => $medecin->adresse,
             'code' => $medecin->ville->code_postal,
         ];
+
             $pdf = PDF::loadView('etiquettePostale', $data);
+
             // dd($pdf);
-            return $pdf->stream('cromdn.pdf');
+        return $pdf->download('cromdn.pdf');
     }
 
 //fonctions des donnees postales
@@ -313,9 +271,9 @@ class DocumentController extends Controller
 
     public function manyLettre()
     {
-        //ini_set('memory_limit','-1');
-        //ini_set('max_execution_time',0);
-        //set_time_limit(450);
+        ini_set('memory_limit','-1');
+        ini_set('max_execution_time',0);
+        set_time_limit(450);
         $data = Input::all();
 
         $medecins = $data['medecins'];
@@ -412,7 +370,10 @@ class DocumentController extends Controller
 
     public function manyPostale()
     {
-        //set_time_limit(300);
+        ini_set('memory_limit','-1');
+        ini_set('max_execution_time',0);
+        set_time_limit(450);
+
         $data = Input::all();
         $postales = [];
 
@@ -433,12 +394,19 @@ class DocumentController extends Controller
         $info = [
             'postales' => $postales,
         ];
+
         $pdf = PDF::loadView('manyEtiquette', $info);
+        //$pdf->setPaper('A4', 'landscape'); // Set paper size and orientation
+
+        $pdf->setOptions(['rotation' => 90]);
+
+        //$pdf->getDomPDF()->getCanvas()->rotate(90, 100, 100); // Example rotation point (100, 100)
 
         // $v=implode(' ',$postales);
         // $pdf = PDF::loadHtml($v);
 //return view('manyEtiquette',['postales' => $postales]);
-        return $pdf->download('cromdn.pdf');
+        return $pdf->stream('cromdn.pdf');
+
     }
 
 
