@@ -480,4 +480,7 @@ class MedecinController extends Controller
         return $pdf->download('medecins.pdf');
     }
 
+
+
+
 }

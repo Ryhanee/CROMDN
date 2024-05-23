@@ -135,8 +135,7 @@ class CotisationController extends Controller
         if ($Anne_in < $Anne_out) {
             $medecins = Medecin::whereHas('cotisation', function ($query) use ($status, $Anne_in, $Anne_out) {
                 if (empty($status)) {
-                    $query->whereBetween('annee', [$Anne_in,
-                        $Anne_out]);
+                    $query->whereIn('payment', [0,1])->whereBetween('annee', [$Anne_in, $Anne_out]);
                 } else {
                     $query->where('payment', $status)->whereBetween('annee', [$Anne_in,
                         $Anne_out]);
@@ -187,7 +186,7 @@ class CotisationController extends Controller
                 $cotisations = Cotisation::where('id_medecin', $medecin->id);
 
                 if (empty($status)) {
-                    $cotisations->whereBetween('annee', [$annee_debut, $annee_fin]);
+                    $cotisations->whereIn('payment', [0,1])->whereBetween('annee', [$annee_debut, $annee_fin]);
                 } else {
                     $cotisations->where('payment', $status)
                         ->whereBetween('annee', [$annee_debut, $annee_fin]);
@@ -278,7 +277,7 @@ class CotisationController extends Controller
         if ($annee_debut < $annee_fin) {
             $medecins = Medecin::whereHas('cotisation', function ($query) use ($status, $annee_debut, $annee_fin) {
                 if (empty($status)) {
-                    $query->whereBetween('annee', [$annee_debut, $annee_fin]);
+                    $query->whereIn('payment', [0,1])->whereBetween('annee', [$annee_debut, $annee_fin]);
                 } else {
                     $query->where('payment', $status)->whereBetween('annee', [$annee_debut, $annee_fin]);
                 }

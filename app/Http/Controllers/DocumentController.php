@@ -277,7 +277,6 @@ class DocumentController extends Controller
         $data = Input::all();
 
         $medecins = $data['medecins'];
-        $documentType = $data['document_type'];
 
         if ($medecins) {
             $IdMedecins = explode(" ", $medecins);
@@ -332,37 +331,13 @@ class DocumentController extends Controller
 
                 array_push($List_PDF, $lettre);
             }
-            if ($documentType === 'word') {
-                $phpWord = new PhpWord();
-                $section = $phpWord->addSection();
-                // dd($attestation);
-
-                Html::addHtml($section, $lettre);
-                $filename = 'Lettre_Rappel.docx'; // Filename for saving
-
-                try {
-                    $writer = IOFactory::createWriter($phpWord, 'Word2007');
-                    $writer->save(storage_path($filename)); // Save the file
-                } catch (\Exception $e) {
-                    // Log or handle the error
-                    return response()->json(['error' => 'Error saving the Word document'], 500);
-                }
-
-                // VERIFIER SI LE FICHIER EXIST
-                if (file_exists(storage_path($filename))) {
-                    return response()->download(storage_path($filename), 'attestation.docx')->deleteFileAfterSend(true);
-                } else {
-                    // Log or handle the error
-                    return response()->json(['error' => 'File not found'], 404);
-                }
-            } else {
 
                 $list_lettres = implode(''
                     , $List_PDF);
                 $pdf = PDF::loadHtml($list_lettres);
 
                 return $pdf->download('Lettre_Rappel.pdf');
-            }
+
         } else {
             return redirect()->back();
         }
@@ -398,6 +373,7 @@ class DocumentController extends Controller
         $pdf = PDF::loadView('manyEtiquette', $info);
         $pdf->setOptions(['rotation' => 90]);
 
+//        dd($pdf);
         // $v=implode(' ',$postales);
         // $pdf = PDF::loadHtml($v);
 //return view('manyEtiquette',['postales' => $postales]);
@@ -433,6 +409,12 @@ class DocumentController extends Controller
         ];
 
         $pdf = PDF::loadView('etiquettePersoPostale', $info);
+        $pdf->getDomPDF()->set_option('dpi', 100);
+        $pdf->getDomPDF()->set_option('defaultFont' , 'Courier');
+
+       // dd($pdf);
+        //$pdf->setPaper('A4', 'landscape');
+
 
 
         // $v=implode(' ',$postales);

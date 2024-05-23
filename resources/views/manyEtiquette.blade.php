@@ -19,7 +19,7 @@
       #postal
       {
          border-style: solid;
-         width: 80%;
+         width: 90%;
          height: 150px;
          border-radius: 5px;
          padding: 5px;
@@ -47,7 +47,7 @@
 <body>
    <div id="container">
       @foreach($postales as $postale)
-       <div style="height: 700px;transform: rotate(90deg);" >
+       <div style="height: 700px;transform: rotate(90deg) translateY(450px);" >
 
        <div  id="postal">
                   <h5 id="pseud">  {{ $postale['prenom'] }} {{ $postale['nom'] }} </h5>
