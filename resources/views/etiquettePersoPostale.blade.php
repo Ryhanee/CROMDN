@@ -10,12 +10,14 @@
             margin-left: 0 !important; /* Supprimez la marge gauche par défaut */
             margin-right: 0 !important; /* Supprimez la marge droite par défaut */
             padding: 0; /* Supprimez le remplissage par défaut */
-            margin-bottom:0 !important;
+            margin-bottom:0.5cm !important;
+            margin-top:0.5cm !important;
+
         }
 
         #container {
-            width: 100%; /* Document en pleine largeur */
-            overflow: auto;
+            width: 28cm; /* Document en pleine largeur */
+            /*overflow: auto;*/
         }
 
         .ligne {
@@ -24,19 +26,20 @@
         }
 
         .bloc {
-            width: 33.1%;
+            width: 6.9cm;
             float: left;
             box-sizing: border-box; /* Inclure les bordures et les marges dans la largeur */
             padding: 1px;
+            height: 3.6cm;
         }
 
         .etiquette {
             border: 1px solid black;
             border-radius: 5px;
             padding: 2px;
-            margin-bottom: 1px;
-            width: 100%; /* Chaque étiquette prend 100% de la largeur du bloc */
-            height: 132px;
+            /*margin-bottom: 1px;*/
+            width: 6.9cm; /* Chaque étiquette prend 100% de la largeur du bloc */
+            /*height: 3.6cm;*/
         }
 
         p {

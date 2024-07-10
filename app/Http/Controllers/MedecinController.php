@@ -176,8 +176,6 @@ class MedecinController extends Controller
 
     public function showUpdateMedecin($id)
     {
-
-
         $nationalites = Nationalite::orderBy('libelle', 'asc')->get();
         $etats = Type_etat::orderBy('libelle', 'asc')->get();
         $exercices = Exercice::orderBy('libelle', 'asc')->get();
@@ -399,6 +397,27 @@ class MedecinController extends Controller
             $medecins = $medecins->Where('etat_actuel', $data['etat']);
         }
 
+        $Anne_in =  $request->input('dateEtat1');
+        $Anne_out = $request->input('dateEtat2');
+
+        if(!empty($Anne_in) AND !empty( $Anne_out)){
+            if($Anne_in <  $Anne_out){
+
+                $Anne_in =  $Anne_in. "-01-01";
+                $Anne_in = strtotime($Anne_in);
+                $Anne_in = date("Y-m-d", $Anne_in);
+
+                $Anne_out = $Anne_out. "-12-31";
+                $Anne_out = strtotime($Anne_out);
+                $Anne_out = date("Y-m-d", $Anne_out);
+                $etat = $request->input('etat');
+                $medecins =  $medecins->whereHas('etat',function ($query) use ($etat,$Anne_in,$Anne_out)
+                {
+                    $query->where('id_type',$etat)->whereBetween('date', [$Anne_in, $Anne_out]);
+                });
+            }
+        }
+
         if (!empty($request->input('type_exercice'))) {
             $medecins = $medecins->Where('id_type_mode', $request->input('type_exercice'));
         }
@@ -480,6 +499,36 @@ class MedecinController extends Controller
         return $pdf->download('medecins.pdf');
     }
 
+    public function statistiques()
+    {
+        $etats = Type_etat::all();
+        $stat = [];
+
+        foreach($etats as $etat){
+            $count = Medecin::Where('etat_actuel',$etat['id'])->count();
+            $stat[] = ['libelle' => $etat['libelle'], 'count' => $count];
+
+        }
+        return view('statistiques',['stat'=> $stat ]);
+    }
+
+    public function restoreDoctorsDelete($id)
+    {
+        $Medecin = Medecin::withTrashed()->find($id);
+        $Medecin->restore();
+
+        return $this->showMedecin($id);
+    }
+
+
+
+    public function listDoctorsDelete()
+    {
+        $listMedecinsDelete = Medecin::onlyTrashed()->paginate(10);
+        $listMedecinsDelete->withPath(URL::full());
+
+        return view('listMedecinsDelete',['medecins'=>$listMedecinsDelete ]);
+    }
 
 
 

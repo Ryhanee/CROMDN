@@ -210,7 +210,8 @@ class CotisationController extends Controller
                 $List_PDF[] = $cotisationsData;
             }
 
-            $html = '<table>';
+            $html = '<h3 style="text-align: center; margin-bottom: 20px;"> Liste des Médecins Dentistes : <span class="badge badge-light">'.count($List_PDF) .'</span> </h3><br>';
+            $html .= '<table>';
             $html .= '<thead>';
             $html .= '<tr style="background: #adb5bd;">';
             $html .= '<th>Num</th><th>Nom medecin</th>';
@@ -304,6 +305,7 @@ class CotisationController extends Controller
 
                     // Create an array to store cotisations details for each medecin
                     $cotisationsData = [
+                        'id' => $medecin -> id,
                         'medecin_name' => $medecin->nom . ' ' . $medecin->prenom,
                         'cotisations' => [],
                     ];
@@ -317,7 +319,8 @@ class CotisationController extends Controller
                 }
 
                 // Generate the HTML table
-                $html = '<table>';
+                $html = '<h3 style="text-align: center; margin-bottom: 20px;"> Liste des Médecins Dentistes : <span class="badge badge-light">'.count($List_PDF) .'</span> </h3><br>';
+                $html .= '<table>';
                 $html .= '<thead>';
                 $html .= '<tr style="background: #adb5bd;">';
                 $html .= '<th>Num</th><th>Nom medecin</th>';
@@ -335,7 +338,7 @@ class CotisationController extends Controller
                 // Add medecin data
                 foreach ($List_PDF as $medecinData) {
                     $html .= '<tr>';
-                    $html .= '<td>' . $num . '</td>';
+                    $html .= '<td>' . $medecinData['id'] . '</td>';
                     $html .= '<td>' . $medecinData['medecin_name'] . '</td>';
 
                     // Loop through each year

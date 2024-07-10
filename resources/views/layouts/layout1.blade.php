@@ -20,14 +20,14 @@
         <link rel="stylesheet" type="text/css" href="{{asset('css/bootstrap.css') }}">
 
          <!------  js------->
-        
+
        <script src="{{asset('js/jquery-3.4.1.min.js') }}"></script>
        <script src="{{asset('js/main-js.js') }}"></script>
-       <script src="{{asset('js/popper.min.js')}}"></script> 
+       <script src="{{asset('js/popper.min.js')}}"></script>
 
        <script src="{{asset('js/bootstrap.min.js')}}"></script>
        <script src="{{ asset('js/utilities.js') }}"></script>
-          
+
         <style type="text/css">
             body{
 
@@ -65,13 +65,13 @@
         <section id="logo-top">
             <div class="container">
                 <div class="row">
-                    
+
                   <div class="col-md-4 logo">
         <a href="{{ route('showIndex') }}">
         <img src="{{ asset('images/logo.png') }}"></a>
       </div>
                     <div class="col-md-4 search">
-                        
+
                             <form class="card card-sm" action="{{ route('searchSimple') }}" method="post">
                                  @csrf
                                 <div class="card-body row no-gutters align-items-center">
@@ -100,24 +100,25 @@
  <i class="fas fa-cogs"></i>
   </button>
  <a class="btn btn-info" id="ajoutMedecin" href="{{ route('showCreateMedecin') }} " title="Ajout Médecin Dentiste"><i class="fas fa-user-plus"></i></a>
- 
+
 
 
   <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-    
+
     <a class="dropdown-item" href="{{ route('showIndex') }}"><i class="fas fa-search-plus fa-sm"></i>Recherche</a>
-    <a class="dropdown-item" href="{{ route('showSearchCotisation') }}"><i class="fas fa-search-dollar"></i>Cotisation</a>  
+    <a class="dropdown-item" href="{{ route('showSearchCotisation') }}"><i class="fas fa-search-dollar"></i>Cotisation</a>
     <a class="dropdown-item" href="{{ route('showParametre') }}"><i class="fas fa-cogs"></i>Paramètres</a>
-    
+      <a class="dropdown-item" href="{{ route('listDoctorsDelete') }}"><i class="fas fa-list"></i>Listes Medecins Retirés</a>
+      <a class="dropdown-item" href="{{ route('statistiques') }}"><i class="fas fa-chart-bar"></i>Statistiques</a>
     <a class="dropdown-item"  href="{{ route('logout') }}"><i class="fas fa-sign-out-alt"></i>Déconnexion</a>
-    
+
   </div>
   @endauth
-  
+
   @endif
         </div>
       </div>
-     </div>            
+     </div>
     </div>
   </div>
 </section>
@@ -130,11 +131,11 @@
                 <div class="col-md-12">
                     <h1> <span class="Bienvenue">Bienvenue dans</span> <span class="titre-appli">DENTY</span></h1>
                     <h6 class="bybusinessmania">by Business Mania</h6>
-                    
+
                 </div>
             </div>
-            
-        </div>  
+
+        </div>
     </section>
      <!--fin section titre ou menu -->
 
@@ -148,7 +149,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-    <p class="copyrights">&copy; 
+    <p class="copyrights">&copy;
         <script type="text/javascript">
 var ladate=new Date()
 document.write(ladate.getFullYear())
@@ -156,11 +157,11 @@ document.write(ladate.getFullYear())
 
      Business Mania</p>
 
-                
+
             </div>
-            
+
         </div>
-        
+
     </div>
 
 </section>

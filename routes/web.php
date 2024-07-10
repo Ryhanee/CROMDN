@@ -83,6 +83,13 @@ Route::get('/typeParModeExercice/{id_mode}','Ajax\AjaxController@typeParModeExer
 
     Route::post('/medecin/export/pdf', 'MedecinController@exportListeMedecins')->name('exportListeMedecins');
 
+    Route::get('/listDoctorsDelete','MedecinController@listDoctorsDelete')->name('listDoctorsDelete');
+
+    Route::get('/restoreDoctorsDelete/{id}','MedecinController@restoreDoctorsDelete')->name('restoreDoctorsDelete');
+
+    Route::get('/statistiques','MedecinController@statistiques')->name('statistiques');
+
+
 //routes cotisations et Tarif
 
 	Route::get('/medecin/cotisation/{idMedecin}', 'CotisationController@showCotisations')->name('showCotisations');
@@ -161,9 +168,9 @@ Route::get('/medecin/discipline/delete/{id}', 'DisciplineController@deleteDiscip
 //fin routes Etats
 
 //routes Mail et SMS
-Route::get('/search/formEmail/{id}', 'ContactController@formMail')->name('formMail');
+    Route::get('/search/formEmail/{id}', 'ContactController@formMail')->name('formMail');
 
-Route::get('/medecin/sendEmail/{id}','ContactController@sendEMail')->name('sendEMail');
+    Route::post('/medecin/sendEmail/','ContactController@sendEMail')->name('sendEMail');
 
 Route::post('/medecin/formEmails/', 'ContactController@formManyEmail')->name('formManyEmail');
 

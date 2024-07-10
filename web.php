@@ -45,8 +45,8 @@ Route::middleware(['access'])->group(function () {
 	//etat par mode d'exercice route
    Route::get('/etatParModeExercice/{id_mode}', 'Ajax\AjaxController@etatParModeExercice')
     ->name('etatParModeExercice');
-    
-    //route type exercice parmode exercice 
+
+    //route type exercice parmode exercice
 Route::get('/typeParModeExercice/{id_mode}','Ajax\AjaxController@typeParModeExercice')
     ->name('typeParModeExercice');
 //fin route Ajax
@@ -78,8 +78,11 @@ Route::get('/typeParModeExercice/{id_mode}','Ajax\AjaxController@typeParModeExer
 	Route::get('/medecin/{id}', 'MedecinController@showMedecin')->name('showMedecin');
 
 	Route::post('/advanced','MedecinController@searchAdvanced')->name('searchAdvanced');
-	
+
 	Route::get('/advanced','MedecinController@searchAdvanced')->name('searchAdvanced');
+
+    Route::get('/listDoctorsDelete','MedecinController@listDoctorsDelete')->name('listDoctorsDelete');
+
 
 //routes cotisations et Tarif
 
@@ -197,7 +200,7 @@ Route::post('medecins/manyPostale', 'DocumentController@manyPostale')->name('man
 //fin routes Documents
 
 // fin middleware admins
-	
+
 });
 
 Route::get('/', function () { return view('welcome');})->name('welcome');
