@@ -358,7 +358,7 @@ class MedecinController extends Controller
 
     public function searchAdvanced(Request $request)
     {
-        $data = Input::all();
+        $data=Input::all();
         // if(empty($request->input('ville')))
         // {
 
@@ -369,34 +369,43 @@ class MedecinController extends Controller
         //    $villeParam  = [$request->input('ville')];
         // }
 
-        $medecins = Medecin::where('nom', 'like', '%' . $request->input('nom') . '%')->
-        Where('prenom', 'like', '%' . $request->input('prenom') . '%')->
-        whereDate('date_naissance', 'like', '%' . $request->input('date_naissance') . '%')->Where('gsm', 'like', '%' . $request->input('gsm') . '%')->
-        Where('adresse', 'like', '%' . $request->input('adresse') . '%');
+        $medecins = Medecin::where('nom','like', '%'.$request->input('nom').'%')->
+        Where('prenom','like','%'.$request->input('prenom').'%')->
+        whereDate('date_naissance','like', '%'.$request->input('date_naissance').'%')->Where('gsm','like','%'.$request->input('gsm').'%')->
+        Where('adresse','like','%'.$request->input('adresse').'%');
 
 
-        if (empty($request->input('ville'))) {
-            $medecins = $medecins->Where('id_ville', 'like', '%' . $request->input('ville'));
-        } else {
-            $medecins = $medecins->Where('id_ville', $request->input('ville'));
+        if(empty($request->input('ville')))
+        {
+            $medecins = $medecins->Where('id_ville','like','%'.$request->input('ville'));
+        }
+        else
+        {
+            $medecins = $medecins->Where('id_ville',$request->input('ville'));
         }
 
-        if (empty($request->input('delegation'))) {
-            $medecins = $medecins->Where('id_delegation', 'like', '%' . $request->input('delegation'));
-        } else {
-            $medecins = $medecins->Where('id_delegation', $request->input('delegation'));
+        if(empty($request->input('delegation')))
+        {
+            $medecins = $medecins->Where('id_delegation','like', '%'.$request->input('delegation'));
+        }
+        else
+        {
+            $medecins = $medecins->Where('id_delegation',$request->input('delegation'));
         }
 
-        if (empty($request->input('specialite'))) {
-            $medecins = $medecins->Where('id_specialite', 'like', '%' . $request->input('specialite'));
-        } else {
-            $medecins = $medecins->Where('id_specialite', $request->input('specialite'));
+        if(empty($request->input('specialite')))
+        {
+            $medecins = $medecins->Where('id_specialite','like','%'.$request->input('specialite'));
+        }
+        else
+        {
+            $medecins = $medecins->Where('id_specialite',$request->input('specialite'));
         }
 
-        if (!empty($request->input('etat'))) {
-            $medecins = $medecins->Where('etat_actuel', $data['etat']);
+        if(!empty($request->input('etat')))
+        {
+            $medecins = $medecins->Where('etat_actuel',$data['etat']);
         }
-
         $Anne_in =  $request->input('dateEtat1');
         $Anne_out = $request->input('dateEtat2');
 
@@ -411,6 +420,7 @@ class MedecinController extends Controller
                 $Anne_out = strtotime($Anne_out);
                 $Anne_out = date("Y-m-d", $Anne_out);
                 $etat = $request->input('etat');
+                var_dump($Anne_in, $Anne_out);
                 $medecins =  $medecins->whereHas('etat',function ($query) use ($etat,$Anne_in,$Anne_out)
                 {
                     $query->where('id_type',$etat)->whereBetween('date', [$Anne_in, $Anne_out]);
@@ -418,14 +428,16 @@ class MedecinController extends Controller
             }
         }
 
-        if (!empty($request->input('type_exercice'))) {
-            $medecins = $medecins->Where('id_type_mode', $request->input('type_exercice'));
+
+        if(!empty($request->input('type_exercice')))
+        {
+            $medecins = $medecins->Where('id_type_mode',$request->input('type_exercice'));
         }
 
         $medecins = $medecins->
-        Where('id_gouvernorat', 'like', '%' . $request->input('gouvernorat') . '%')->
-        Where('sexe', 'like', '%' . $request->input('sexe') . '%')->
-        Where('id_mode', 'like', '%' . $request->input('mode') . '%');
+        Where('id_gouvernorat','like', '%'.$request->input('gouvernorat').'%')->
+        Where('sexe','like', '%'.$request->input('sexe').'%')->
+        Where('id_mode','like', '%'.$request->input('mode').'%');
 
         $medecinsGet = $medecins->get();
         $medecinsPaginate = $medecins->paginate(5);
@@ -433,21 +445,23 @@ class MedecinController extends Controller
 
         $medecinsPaginate->withPath(URL::full());
         $idMedecins = $medecinsGet->implode('id', ', ');
-        if ($idMedecins) {
+        if ($idMedecins)
+        {
             //dd('true');
-            $idM = explode(" ", $idMedecins);
-            $locations = Position::whereIn('id_medecin', $idM)->get();
+            $idM =explode(" ", $idMedecins);
+            $locations = Position::whereIn('id_medecin',$idM)->get();
             //dd($request->input(),$medecins,Medecin::whereId(1)->first());
-            return view('listMedecins', ['medecins' => $medecinsPaginate, 'locations' => $locations, 'medecinsGet' => $medecinsGet]);
-        } else {
+            return view('listMedecins',['medecins'=>$medecinsPaginate , 'locations'=>$locations , 'medecinsGet' => $medecinsGet]);
+        }
+        else
+        {
             //dd('false');
-            return redirect(route('showIndex'))->withErrors(['Aucun Médecin dentiste existe']);
+            return redirect(route('showIndex'))->withErrors(['Aucun MÃ©decin dentiste existe']);
         }
     }
 
     public function exportListeMedecins()
     {
-
         $data = Input::all();
         $medecins = $data['medecins'];
         $IdMedecins = explode(" ", $medecins);

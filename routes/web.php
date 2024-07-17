@@ -172,19 +172,19 @@ Route::get('/medecin/discipline/delete/{id}', 'DisciplineController@deleteDiscip
 
     Route::post('/medecin/sendEmail/','ContactController@sendEMail')->name('sendEMail');
 
-Route::post('/medecin/formEmails/', 'ContactController@formManyEmail')->name('formManyEmail');
+    Route::post('/medecin/formEmails/', 'ContactController@formManyEmail')->name('formManyEmail');
 
-Route::post('/medecin/sendEmails/', 'ContactController@sendManyEmail')->name('sendManyEmail');
+    Route::post('/medecin/sendEmails/', 'ContactController@sendManyEmail')->name('sendManyEmail');
 
-Route::get('/search/showFormSMS/{id}', 'ContactController@showFormSMS')->name('showFormSMS');
+    Route::get('/search/showFormSMS/{id}', 'ContactController@showFormSMS')->name('showFormSMS');
 
-Route::post('/medecin/sendMessage/',	'ContactController@sendMessage')->name('sendMessage');
+    Route::post('/medecin/sendMessage/',	'ContactController@sendMessage')->name('sendMessage');
 
-Route::post('/medecin/formManySMS/', 'ContactController@formManySMS')->name('formManySMS');
+    Route::post('/medecin/formManySMS/', 'ContactController@formManySMS')->name('formManySMS');
 
-Route::post('/medecin/sendMessages/', 'ContactController@sendMessages')->name('sendMessages');
+    Route::post('/medecin/sendMessages/', 'ContactController@sendMessages')->name('sendMessages');
 
-Route::get('/listMedecins/{medecins}', 'ContactController@listMedecins')->name('listMedecins');
+    Route::get('/listMedecins/{medecins}', 'ContactController@listMedecins')->name('listMedecins');
 
 //fin routes Mail et SMS
 
