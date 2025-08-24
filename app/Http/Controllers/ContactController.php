@@ -96,37 +96,50 @@ class ContactController extends Controller
     {
         $data=$request->all();
         $data['email']=$data['mail'];
+
+//        dd($data);
+
         $medecin = Medecin::whereId($data['idMedecin'])->first();
+
+        // Check if the doctor has an email address
+        if (empty($medecin->email)) {
+            return redirect()->back()->withErrors('Le médecin n\'a pas d\'adresse e-mail.');
+        }
 
         // Enregistrez les pièces jointes dans le dossier 'attachments' du répertoire public
         $piecesJointes = [];
-        $attachments = $data['files'];
-        //dd($attachments);
-        foreach ($attachments as $attachment)
-        {
-
-            $filename = $attachment->getClientOriginalName();
-            $path = $attachment->storeAs('attachments', $filename, 'public');
-            $piecesJointes[] = storage_path('app/public/' . $path);
-            // $attachment->move(public_path().'/attachments/', $filename);
-            // $path = public_path('attachments/'.$filename);
-            //$path = $attachment->store('attachments', 'public');
+        if (isset($data['file'])){
+            $attachments = $data['files'];
+            //dd($attachments);
+            foreach ($attachments as $attachment)
+            {
+                $filename = $attachment->getClientOriginalName();
+                $path = $attachment->storeAs('attachments', $filename, 'public');
+                $piecesJointes[] = storage_path('app/public/' . $path);
+                // $attachment->move(public_path().'/attachments/', $filename);
+                // $path = public_path('attachments/'.$filename);
+                //$path = $attachment->store('attachments', 'public');
+            }
         }
+
+
         Mail::send('email',$data, function($message) use ($medecin, $data, $piecesJointes) {
             $message->to($medecin->email, $medecin->nom )
                 ->subject($data['subject']) ;
             // Attachez chaque pièce jointe à l'e-mail
-            foreach ($piecesJointes as $piecesJointe) {
-                $message->attach($piecesJointe);
+            if ($piecesJointes){
+                foreach ($piecesJointes as $piecesJointe) {
+                    $message->attach($piecesJointe);
+                }
             }
         });
 
         if (Mail::failures()) {
-            return redirect(route('showMedecin', $data['idMedecin']))->withErrors('DÃ©solÃ©! Veuillez rÃ©essayer plus tard');
+            return redirect(route('showMedecin', $data['idMedecin']))->withErrors('Désolé! Veuillez réessayer plus tard');
         }
         else
         {
-            return redirect(route('showMedecin', $data['idMedecin']))->withErrors('L\'Email a Ã©tÃ© envoyÃ©');
+            return redirect(route('showMedecin', $data['idMedecin']))->withErrors('L\'Email a été envoyé');
         }
 
     }
@@ -149,7 +162,6 @@ class ContactController extends Controller
         $content = ['email'=> $data['mail'] ];
         $medecins=$data['medecins'];
         $IdMedecins=explode(" ", $medecins);
-
         $emailMedecins = Medecin::whereIn('id',$IdMedecins)->where('email','!=',"")->get();
 
 
@@ -160,38 +172,44 @@ class ContactController extends Controller
 
         // Enregistrez les pièces jointes dans le dossier 'attachments' du répertoire public
         $piecesJointes = [];
-        $attachments = $data['files'];
-        foreach ($attachments as $attachment)  {
-            $filename = $attachment->getClientOriginalName();
-            $path = $attachment->storeAs('attachments', $filename, 'public');
-            $piecesJointes[] = storage_path('app/public/' . $path);
+        if (isset($data['file'])) {
+            $attachments = $data['files'];
+            foreach ($attachments as $attachment) {
+                $filename = $attachment->getClientOriginalName();
+                $path = $attachment->storeAs('attachments', $filename, 'public');
+                $piecesJointes[] = storage_path('app/public/' . $path);
+            }
         }
+
 
         foreach ($emailMedecins as $medecin)
         {
+
             if (filter_var($medecin->email, FILTER_VALIDATE_EMAIL)) {
 
                 Mail::send('email', $content, function($message) use ($medecin, $data, $piecesJointes)
                 {
-                    $message->to($medecin->email, $medecin->nom )
-                        ->subject($data['subject']) ;
+                    $message->to($medecin->email, $medecin->nom)->subject($data['subject']) ;
                     // Attachez chaque pièce jointe à l'e-mail
-                    foreach ($piecesJointes as $piecesJointe) {
-                        $message->attach($piecesJointe);
+                    if($piecesJointes) {
+                        foreach ($piecesJointes as $piecesJointe) {
+                            $message->attach($piecesJointe);
+                        }
                     }
+
                     // $data=Input::all();
                     // $message->to($medecin->email, $medecin->nom )->subject($data['subject']);
                 });
 
                 if(count(Mail::failures()) > 0 )
                 {
-                    return back()->withErrors('DÃ©solÃ©! Veuillez rÃ©essayer plus tard');
+                    return back()->withErrors('Désolé! Veuillez réessayer plus tard');
                 }
 
             }
         }
 
-        return view('listMedecins',['medecins'=>$medecinsArry, 'locations'=>$locations,'medecinsGet' => $medecinsGet ])->withErrors('Les emails ont Ã©tÃ© envoyÃ©s');
+        return view('listMedecins',['medecins'=>$medecinsArry, 'locations'=>$locations,'medecinsGet' => $medecinsGet ])->withErrors('Les emails ont été envoyés');
     }
 
     //button retour du sms et email multiple

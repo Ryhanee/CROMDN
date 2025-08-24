@@ -18,7 +18,7 @@
     <div class="row justify-content-between  entete_medecin">
         <div class="col-md-12">
             <div class="float-left btn-list">
-                <form action="{{ route('manyLettre') }}" method="post" target="_blank">
+                <form id="lettreForm">
                 @csrf
                     <input type="hidden" name="medecins" value="{{($medecins->implode('id', ', '))}}">
                     <input type="hidden" name="lettre" value="1">
@@ -38,6 +38,62 @@
                     </button>
                 </form>
             </div>
+
+            <!-- Overlay Spinner -->
+            <div class="overlay-spinner" id="spinnerOverlay">
+                <div class="spinner-border text-light" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </div>
+
+            <script>
+                document.getElementById('lettreForm').addEventListener('submit', function(event) {
+                    event.preventDefault(); // Empêcher la soumission normale du formulaire
+
+                    const form = event.target;
+                    const formData = new FormData(form);
+                    const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+
+                    // Afficher le spinner overlay
+                    document.getElementById('spinnerOverlay').style.display = 'flex';
+
+                    fetch('{{ route('manyLettre') }}', {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': csrfToken
+                        },
+                        body: formData
+                    })
+                .then(response => response.json())
+                        .then(data => {
+                            let links = data.links;
+                            let index = 0;
+
+                            function downloadNext() {
+                                if (index < links.length) {
+                                    let link = document.createElement('a');
+                                    link.href = links[index];
+                                    link.download = '';
+                                    document.body.appendChild(link);
+                                    link.click();
+                                    document.body.removeChild(link);
+                                    index++;
+                                    setTimeout(downloadNext, 2000); // Pause de 2 secondes entre les téléchargements
+                                } else {
+                                    // Masquer le spinner overlay lorsque tous les téléchargements sont terminés
+                                    document.getElementById('spinnerOverlay').style.display = 'none';
+                                }
+                            }
+
+                            downloadNext();
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            // Masquer le spinner overlay si une erreur se produit
+                            document.getElementById('spinnerOverlay').style.display = 'none';
+                        });
+                });
+            </script>
 
 
             <div class="float-left btn-list">

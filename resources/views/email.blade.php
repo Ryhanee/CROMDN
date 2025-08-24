@@ -7,7 +7,8 @@
 </head>
 <body>
 <div id="container">
-    <h1>{{ $subject  }}</h1><br>
+    <!-- <h1>{{ $subject  }}</h1><br> -->
+    <h1> </h1><br>
     <p>{{ $email }}</p><br>
 
 </div>

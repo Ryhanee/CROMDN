@@ -6,7 +6,7 @@
     <div class="row">
         <div class="col-md-12 total">
             <h3>
-                Liste des Médecins Dentistes retir�s <span class="badge badge-light">{{ $medecins->total() }}</span>
+                Liste des Médecins Dentistes retirés <span class="badge badge-light">{{ $medecins->total() }}</span>
             </h3>
         </div>
     </div>

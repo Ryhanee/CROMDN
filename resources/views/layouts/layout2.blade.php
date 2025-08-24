@@ -6,7 +6,9 @@
 <link rel="shortcut icon" type="image/png" href="{{ asset('images/favicon.ico') }}"/>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-{{------ CSS -------}}
+    <meta name="csrf-token" content="{{ csrf_token() }}"> <!-- Ajouter le token CSRF -->
+
+    {{------ CSS -------}}
 
 <link rel="stylesheet" type="text/css" href="{{asset('css/maincss.css') }}">
 <link rel="stylesheet" type="text/css" href="{{asset('css/bootstrap.css') }}">
@@ -14,16 +16,18 @@
 {{------ Javascript-------}}
 <script src="{{asset('js/jquery-3.4.1.min.js') }}"></script>
 <script src="{{asset('js/main-js.js') }}"></script>
-<script src="{{asset('js/popper.min.js')}}"></script> 
+<script src="{{asset('js/popper.min.js')}}"></script>
 <script src="{{asset('js/bootstrap.min.js')}}"></script>
 <script src="{{ asset('js/utilities.js') }}"></script>
-{{------ API Maps -------}}
+    <script src="{{asset('js/downloadLettres.js') }}"></script>
+
+    {{------ API Maps -------}}
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gmaps.js/0.4.24/gmaps.js"></script>
 <script src="https://maps.google.com/maps/api/js?key=AIzaSyCXTIjsqvdnQzFyLBDrUQb3h7TMvLxj1s8"></script>
 
 {{--  GOOGLE FONTS
-	
+
 <link href="https://fonts.googleapis.com/css?family=Work+Sans&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=Abril+Fatface&display=swap" rel="stylesheet">
 
@@ -99,24 +103,24 @@ body
 						<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 							<i class="fas fa-cogs"></i>
 						</button>
-						<a class="btn btn-primary" id="ajoutMedecin" 
-						href="{{ route('showCreateMedecin') }}" 
+						<a class="btn btn-primary" id="ajoutMedecin"
+						href="{{ route('showCreateMedecin') }}"
 						title="Ajout Médecin Dentiste">
 						<i class="fas fa-user-plus"></i></a>
 
 						@if (Route::has('login'))
 						<div class="dropdown-menu" aria-labelledby="dropdownMenu2">
 						    @auth
-						    <a class="dropdown-item" href="{{ route('showIndex') }}"><i class="fas fa-search-plus fa-sm"></i>Recherche</a> 
+						    <a class="dropdown-item" href="{{ route('showIndex') }}"><i class="fas fa-search-plus fa-sm"></i>Recherche</a>
 						    <a class="dropdown-item" href="{{ route('showSearchCotisation') }}"><i class="fas fa-search-dollar"></i>Cotisation</a>
 						    <a class="dropdown-item" href="{{ route('showParametre') }}"><i class="fas fa-cogs"></i>Paramètres</a>
-						    
+
 						    <a class="dropdown-item"  href="{{ route('logout') }}"><i class="fas fa-sign-out-alt"></i>Déconnexion</a>
-						    
+
 						  </div>
 
 							@endauth
-						
+
 						@endif
 					</div>
 				</div>
@@ -166,11 +170,11 @@ body
 	<div class="container">
 		<div class="row">
 			<div class="col-md-6">
-				<p class="info-inscri">Numéro d'Inscription : <span class="numero-inscri">{{ $medecin->id }}</span>    					
+				<p class="info-inscri">Numéro d'Inscription : <span class="numero-inscri">{{ $medecin->id }}</span>
 			</p>
 			</div>
 			<div class="col-md-6">
-				<p class="info-inscri">Dr : <span class="numero-inscri">{{ $medecin->prenom }}</span> <span class="numero-inscri">{{ $medecin->nom }}</span>  						
+				<p class="info-inscri">Dr : <span class="numero-inscri">{{ $medecin->prenom }}</span> <span class="numero-inscri">{{ $medecin->nom }}</span>
 			</p>
 			</div>
 		</div>

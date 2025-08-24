@@ -273,15 +273,17 @@ class DocumentController extends Controller
     {
         ini_set('memory_limit','-1');
         ini_set('max_execution_time',0);
-        set_time_limit(450);
+        set_time_limit(3600);
+
         $data = Input::all();
 
         $medecins = $data['medecins'];
 
         if ($medecins) {
             $IdMedecins = explode(" ", $medecins);
+            //$carbon = new Carbon();
+            $carbon = Carbon::now()->locale('fr_FR');
 
-            $carbon = new Carbon();
             $date = $carbon->isoFormat('D MMMM YYYY');
 
             $List_PDF = [];
@@ -297,13 +299,14 @@ class DocumentController extends Controller
                 ]);
                 $num = Numerola::all()->max('id');
 
-                $cotisations = Cotisation::where('id_medecin', $medecin->id)->where('payment', 0)->get();
+                $cotisations = Cotisation::where('id_medecin', $medecinId)->where('payment', 0)->get();
                 $ville = $medecin->ville->libelle;
 
                 $non_paye = [];
                 foreach ($cotisations as $cotisation) {
                     array_push($non_paye, $cotisation->annee);
                 }
+
                 $montant = $cotisations->sum('montant');
                 $tab = $medecin->toArray();
 
@@ -327,7 +330,7 @@ class DocumentController extends Controller
                 $lettre = str_replace("[non_paye]", $non_paye, $lettre);
                 $lettre = str_replace("[montant]", $montant, $lettre);
                 $lettre = str_replace("[date]", $date, $lettre);
-                $lettre = str_replace("[num]", $num, $lettre);
+                //$lettre = str_replace("[num]", $num, $lettre);
 
                 array_push($List_PDF, $lettre);
             }
@@ -392,6 +395,9 @@ class DocumentController extends Controller
 
         $medecins = $data['medecins'];
         $IdMedecins = explode(" ", $medecins);
+
+        // Limit the number of medecins to 8 for testing
+        $IdMedecins = array_slice($IdMedecins, 0, 24);
 
         foreach ($IdMedecins as $medecinId) {
             $medecin = Medecin::whereId($medecinId)->first();

@@ -8,9 +8,11 @@
         {{------ API Maps -------}}
         <script src="https://cdnjs.cloudflare.com/ajax/libs/gmaps.js/0.4.24/gmaps.js"></script>
         <script src="https://maps.google.com/maps/api/js?key=AIzaSyCXTIjsqvdnQzFyLBDrUQb3h7TMvLxj1s8"></script>
+    <meta name="csrf-token" content="{{ csrf_token() }}"> <!-- Ajouter le token CSRF -->
 
 
-        <!------  GOOGLE FONTS------->
+
+    <!------  GOOGLE FONTS------->
         <link href="https://fonts.googleapis.com/css?family=Work+Sans&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Abril+Fatface&display=swap" rel="stylesheet">
         <!------  FONT AWESOME------->
@@ -27,6 +29,7 @@
 
        <script src="{{asset('js/bootstrap.min.js')}}"></script>
        <script src="{{ asset('js/utilities.js') }}"></script>
+        <script src="{{asset('js/downloadLettres.js') }}"></script>
 
         <style type="text/css">
             body{

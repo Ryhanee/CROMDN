@@ -10,8 +10,8 @@
             margin-left: 0 !important; /* Supprimez la marge gauche par défaut */
             margin-right: 0 !important; /* Supprimez la marge droite par défaut */
             padding: 0; /* Supprimez le remplissage par défaut */
-            margin-bottom:0.5cm !important;
-            margin-top:0.5cm !important;
+            margin-bottom:0 !important;
+            margin-top:0 !important;
 
         }
 
